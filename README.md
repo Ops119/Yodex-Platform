@@ -28,7 +28,7 @@ npm run dev
 npm run deploy
 ```
 
-For a first deploy, create the `yodex-demo` Pages project in Cloudflare or run `npx wrangler pages project create yodex-demo` before deploying.
+`npm run deploy` runs `wrangler deploy`, which publishes `public/` as Worker static assets using `wrangler.jsonc`. Cloudflare's Git integration (Workers Builds) runs the same command. There is no `_redirects` file: `/` serves `public/index.html` by default, and a `/ /index.html` rule is rejected as an infinite loop.
 
 ## Design (v2 redesign)
 
@@ -53,7 +53,7 @@ For a first deploy, create the `yodex-demo` Pages project in Cloudflare or run `
 - `public/style.css` — styling
 - `public/app.js` — demo interactions
 - `public/_headers` — Pages response headers
-- `public/_redirects` — root route mapping
+- `wrangler.jsonc` — Workers static-assets config (deploys `public/`)
 - `public/favicon.svg` — app icon
 - `package.json` — optional local development and CLI deployment
 - `docs/ARCHITECTURE.md` — architecture notes
