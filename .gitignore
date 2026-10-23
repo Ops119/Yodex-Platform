@@ -1,5 +1,10 @@
 node_modules/
 .wrangler/
 .dev.vars
-.env*
+.env
+.env.*
+!.env.example
 .DS_Store
+contracts/out/
+contracts/cache/
+contracts/broadcast/

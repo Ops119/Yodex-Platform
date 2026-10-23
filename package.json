@@ -2,11 +2,12 @@
   "name": "yodex-cloudflare-demo",
   "version": "0.1.0",
   "private": true,
-  "description": "YODEX browser-only demo for Cloudflare Pages",
+  "description": "YODEX dashboard (Cloudflare Workers static assets) and Base Sepolia contract prototypes",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "check": "node --check public/app.js"
+    "check": "node --check public/app.js",
+    "test:contracts": "cd contracts && forge test"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

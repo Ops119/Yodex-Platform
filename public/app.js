@@ -260,6 +260,21 @@ function wallet(){return `
       <div class="space"></div>
       <div class="notice">Production permissions require smart-account validation modules, per-session caps, expiry, nonce isolation and revocation enforced in Solidity.</div>
     </section>
+  </div>
+  <div class="grid two-even section">
+    <section class="card">
+      <div class="card-head"><div><h2>Base Sepolia testnet</h2><div class="card-sub">Connects MetaMask to chain 84532 and reads your test ETH balance. No transactions are sent.</div></div><span class="chip ${sepolia.ok?'chip-mint':''}">${sepolia.ok?'Connected':'Testnet'}</span></div>
+      <div class="notice" id="sepoliaStatus" aria-live="polite">${safe(sepolia.text)}</div>
+      <div class="space"></div>
+      <button class="btn btn-dark btn-block" id="sepoliaConnect" type="button">Connect to Base Sepolia</button>
+    </section>
+    <section class="card">
+      <div class="card-head"><div><h2>YDXT token allocation</h2><div class="card-sub">Fixed supply of 230,000,000 YDXT (18 decimals), minted once at deployment. Not yet deployed.</div></div><span class="chip">Testnet spec</span></div>
+      <div class="alloc-bar">${YDXT.map(([,p,c])=>`<span style="width:${p}%;background:${c}"></span>`).join('')}</div>
+      <div class="legend">${YDXT.map(([n,p,c])=>`<div class="legend-row"><span class="nm"><span class="sw" style="background:${c}"></span>${n}</span><span class="num">${p}% · ${(230e6*p/100).toLocaleString('en-GB')} YDXT</span></div>`).join('')}</div>
+      <div class="space"></div>
+      <div class="notice">No pre-sale contract or vesting exists. The public pre-sale is not live, and promoting it in the UK requires FCA-compliant approval.</div>
+    </section>
   </div>`}
 
 function history(){return `<section class="card"><div class="card-head"><h2>Demo activity log</h2><span class="chip">Local browser data</span></div>${activityRows(35)}</section>`}
@@ -358,7 +373,23 @@ async function connect(){
   try{const a=await window.ethereum.request({method:'eth_requestAccounts'});if(a?.[0]){state.wallet=a[0];save();render();toast('MetaMask signer connected. No transaction sent.')}}
   catch(e){toast('Connection cancelled or unavailable')}
 }
+// Base Sepolia (chain 84532) connection: wallet requests only, nothing is signed or sent.
+const SEPOLIA={chainId:'0x14a34',chainName:'Base Sepolia',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://sepolia.base.org'],blockExplorerUrls:['https://sepolia.basescan.org']};
+let sepolia={ok:false,text:'Not connected'};
+const YDXT=[['Liquidity',30,'#3ee0a5'],['Treasury',25,'#c9d1d9'],['Community',15,'#6cf0c0'],['Public pre-sale',15,'#f0c46a'],['Development',10,'#8a929b'],['Team',5,'#5f666e']];
+async function connectSepolia(){
+  const show=(text,ok=false)=>{sepolia={ok,text};render()};
+  if(!window.ethereum)return show('MetaMask browser extension not detected');
+  try{
+    const accounts=await window.ethereum.request({method:'eth_requestAccounts'});
+    try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:SEPOLIA.chainId}]})}
+    catch(e){if(e.code===4902)await window.ethereum.request({method:'wallet_addEthereumChain',params:[SEPOLIA]});else throw e}
+    const balance=await window.ethereum.request({method:'eth_getBalance',params:[accounts[0],'latest']});
+    show(`${accounts[0].slice(0,6)}…${accounts[0].slice(-4)} · ${(Number(BigInt(balance))/1e18).toFixed(5)} Sepolia ETH · dashboard actions remain simulated`,true);
+  }catch(e){show('Wallet connection failed: '+(e.message||'unknown error'))}
+}
 function wireWallet(){
+  document.getElementById('sepoliaConnect').onclick=connectSepolia;
   document.getElementById('walletConnect').onclick=connect;
   document.getElementById('disconnect').onclick=()=>{state.wallet=null;save();render();toast('Local session disconnected')};
   document.querySelectorAll('[data-policy]').forEach(x=>x.onchange=()=>{state.permissions[x.dataset.policy]=x.checked;save();toast('Demo-only policy updated')});
