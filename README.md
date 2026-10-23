@@ -1,4 +1,4 @@
-# YODEX — Cloudflare Pages Demo
+# YODEX — Dashboard and Base Sepolia prototypes
 
 A Cloudflare Pages-ready version of the YODEX browser-only MVP. The deployable directory is `public/`.
 
@@ -56,4 +56,18 @@ npm run deploy
 - `wrangler.jsonc` — Workers static-assets config (deploys `public/`)
 - `public/favicon.svg` — app icon
 - `package.json` — optional local development and CLI deployment
+- `src/worker.js` — `/api/health` and `/api/config` endpoints
+- `contracts/` — Solidity prototypes, Foundry tests and deploy script
+- `.env.example` — Base Sepolia RPC and the six allocation wallet variables
 - `docs/ARCHITECTURE.md` — architecture notes
+
+## On-chain prototypes (Base Sepolia, unaudited)
+
+`contracts/` holds Solidity prototypes and Foundry tests: an owner-controlled contract wallet with a CREATE2 factory, a 1:1 share vault, an escrow-and-cancel order book, a swap-router allowlist scaffold, and the **YDXT** test token.
+
+- **YDXT:** 230,000,000 fixed supply with 18 decimals, minted once at deployment across six distinct wallets: 30% liquidity, 25% treasury, 15% community, 15% public pre-sale, 10% development and 5% team. There is no mint, burn, vesting or sale contract. See `docs/TOKENOMICS.md`.
+- **Test:** `cd contracts && forge test` (10 tests).
+- **Deploy (testnet only):** see `docs/DEPLOY.md`. Nothing has been deployed, and `/api/config` returns `null` contract addresses until it is.
+- **Status:** the contracts are unaudited and must not hold real value. See `docs/SECURITY.md` and `docs/ONCHAIN.md`.
+
+The Smart Wallet page can connect MetaMask to Base Sepolia and shows the YDXT allocation. Swaps, orders and vaults in the dashboard remain browser simulations. `src/worker.js` serves `/api/health` and `/api/config`.
