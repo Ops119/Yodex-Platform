@@ -1,0 +1,12 @@
+{
+  "name": "yodex-cloudflare-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "YODEX browser-only demo for Cloudflare Pages",
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public --project-name yodex-demo",
+    "check": "node --check public/app.js"
+  },
+  "devDependencies": {"wrangler": "^4.0.0"}
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#0a0b0d"/>
+  <meta name="description" content="YODEX — a smart wallet, swap, orders and vaults dashboard on Base. Demo environment."/>
+  <title>YODEX — Dashboard</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="risk-strip" role="note">
+    <strong>Capital at risk.</strong>
+    Don't invest unless you're prepared to lose all the money you invest. This is a high-risk investment and you should not expect to be protected if something goes wrong.
+    <a href="#" data-page="risk">Take 2 mins to learn more</a>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">Y</div>
+        <div class="brand-text">YODEX<small>Smart money on Base</small></div>
+      </div>
+
+      <div class="network"><span class="dot"></span>Base · Demo network</div>
+
+      <nav class="nav" id="nav"></nav>
+
+      <div class="side-bottom">
+        <div class="side-card">
+          <div class="side-card-title"><span class="dot"></span>Demo mode</div>
+          <p>Simulated balances and fixed prices. No real assets are moved.</p>
+        </div>
+        <button id="reset" class="btn btn-ghost btn-block" type="button">Reset demo data</button>
+      </div>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <div class="topbar-brand">
+          <div class="mark mark-sm" aria-hidden="true">Y</div>
+          <span>YODEX</span>
+        </div>
+        <div class="page-heading">
+          <div class="eyebrow">Dashboard <span aria-hidden="true">/</span> <span id="crumb">Overview</span></div>
+          <h1 id="pageTitle">Overview</h1>
+        </div>
+        <div class="header-actions">
+          <div class="segmented" role="group" aria-label="Display currency" id="currency">
+            <button type="button" data-ccy="GBP">£<span class="ccy-code"> GBP</span></button>
+            <button type="button" data-ccy="USD">$<span class="ccy-code"> USD</span></button>
+          </div>
+          <button class="btn btn-primary" id="connect" type="button">Connect MetaMask</button>
+        </div>
+      </header>
+
+      <main id="content" class="content"></main>
+
+      <footer class="footer">
+        <p>YODEX MVP · Local simulation · Not audited · No real transactions or financial returns.</p>
+        <p>Prices are fixed demo fixtures. GBP values use a fixed illustrative rate and are not live FX quotes.</p>
+      </footer>
+    </div>
+  </div>
+
+  <nav class="tabbar" id="tabbar" aria-label="Main navigation"></nav>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
